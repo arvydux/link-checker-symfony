@@ -25,14 +25,4 @@ class ResponseFromUrlService
     {
         return $this->response;
     }
-
-    public function getResponseWithHeaders() : ?array
-    {
-        return $this->getResponse()?->getHeaders();
-    }
-
-    public function getResponseWithBody() : ?string
-    {
-        return $this->getFullResponse()?->getBody()->getContents();
-    }
 }

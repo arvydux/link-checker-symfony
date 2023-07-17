@@ -14,7 +14,7 @@ class KeywordsService
         $dom->loadStr($response->getBody()->getContents());
         $tags = $dom->find('meta');
         foreach ($tags as $tag){
-            if($tag->getAttribute('name') == "keywords"){
+            if($tag->getAttribute('name') === "keywords"){
                 return $tag->getAttribute('content') ?: null;
             }
         }

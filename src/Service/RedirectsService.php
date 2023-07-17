@@ -2,7 +2,6 @@
 
 namespace App\Service;
 
-use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 
 class RedirectsService
