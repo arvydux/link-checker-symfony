@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Link{% endblock %}
+
+{% block body %}
+    <h1>Link</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ link.id }}</td>
+            </tr>
+            <tr>
+                <th>Url</th>
+                <td>{{ link.url }}</td>
+            </tr>
+            <tr>
+                <th>Redirects</th>
+                <td>
+                    <table class="table table-hover table-striped" style="font-size:16px">
+                        <thead>
+                        <tr>
+                            <th>HTTP status code</th>
+                            <th>URL redirect</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for urlRedirect, statusCode in link.redirects %}
+                        <tr>
+                            <td><span class="badge badge-warning">{{ statusCode }}</span></td>
+                            <td>{{ urlRedirect }}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <th>Redirect amount</th>
+                <td>{{ link.redirectAmount }}</td>
+            </tr>
+            <tr>
+                <th>Keywords</th>
+                <td>{{ link.keywords }}</td>
+            </tr>
+            <tr>
+                <th>Checked at</th>
+                <td>{{ link.checkedAt ? link.checkedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_link_index') }}">back to list</a>
+
+    <a href="{{ path('app_link_edit', {'id': link.id}) }}">edit</a>
+
+    {{ include('link/_delete_form.html.twig') }}
+{% endblock %}
