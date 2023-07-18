@@ -4,7 +4,6 @@ namespace App\Tests\Service;
 
 use App\Entity\Link;
 use App\Service\CheckLinkService;
-use App\Service\RedirectsService;
 use App\Service\ResponseFromUrlService;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
