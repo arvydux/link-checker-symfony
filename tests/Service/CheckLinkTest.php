@@ -3,19 +3,24 @@
 namespace App\Tests\Service;
 
 use App\Entity\Link;
-use App\Service\CheckLinkService;
 use App\Service\ResponseFromUrlService;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class CheckLinkTest extends WebTestCase
 {
+    protected function setUp() : void
+    {
+        static::bootKernel();
+
+        $this->checkLinkService = static::$kernel->getContainer()->get('App\Service\CheckLinkService');
+    }
+
     public function testCheckLinkServiceReturnDataProperly(): void
     {
         $link = new Link();
         $link->setUrl('http://cnn.com');
 
-        $checkLinkService = new CheckLinkService();
-        $checkLinkService->checkLink($link);
+        $this->checkLinkService->checkLink($link);
 
         $this->assertEquals(3, count($link->getRedirects()));
         $this->assertEquals(3, $link->getRedirectAmount());
@@ -28,8 +33,8 @@ class CheckLinkTest extends WebTestCase
         $link = new Link();
         $link->setUrl('https://www.whatsmydns.net/example-301-redirect');
 
-        $responseFromUrlService = new ResponseFromUrlService($link->getUrl());
-        $response = $responseFromUrlService->getResponse();
+        $responseFromUrlService = new ResponseFromUrlService();
+        $response = $responseFromUrlService->getResponse($link->getUrl());
 
         $this->assertInstanceOf('GuzzleHttp\Psr7\Response', $response);
     }
@@ -39,8 +44,7 @@ class CheckLinkTest extends WebTestCase
         $link = new Link();
         $link->setUrl('https://www.whatsmydns.net/example-301-redirect');
 
-        $checkLinkService = new CheckLinkService();
-        $checkLinkService->checkLink($link);
+        $this->checkLinkService->checkLink($link);
 
         $this->assertContains('301', $link->getRedirects());
         $this->assertNotContains('302', $link->getRedirects());
@@ -51,8 +55,7 @@ class CheckLinkTest extends WebTestCase
         $link = new Link();
         $link->setUrl('https://www.whatsmydns.net/example-302-redirect');
 
-        $checkLinkService = new CheckLinkService();
-        $checkLinkService->checkLink($link);
+        $this->checkLinkService->checkLink($link);
 
         $this->assertContains('302', $link->getRedirects());
         $this->assertNotContains('301', $link->getRedirects());
@@ -63,8 +66,7 @@ class CheckLinkTest extends WebTestCase
         $link = new Link();
         $link->setUrl('https://www.whatsmydns.net/example-multi-redirect');
 
-        $checkLinkService = new CheckLinkService();
-        $checkLinkService->checkLink($link);
+        $this->checkLinkService->checkLink($link);
 
         $this->assertContains('301', $link->getRedirects());
         $this->assertContains('302', $link->getRedirects());
@@ -75,21 +77,20 @@ class CheckLinkTest extends WebTestCase
         $link = new Link();
         $link->setUrl('https://www.whatsmydns.net/example-301-redirect');
 
-        $checkLinkService = new CheckLinkService();
-        $checkLinkService->checkLink($link);
+        $this->checkLinkService->checkLink($link);
 
         $this->assertEquals(1, $link->getRedirectAmount());
 
         $link = new Link();
         $link->setUrl('https://www.whatsmydns.net/example-302-redirect');
 
-        $checkLinkService->checkLink($link);
+        $this->checkLinkService->checkLink($link);
         $this->assertEquals(1, $link->getRedirectAmount());
 
         $link = new Link();
         $link->setUrl('https://www.whatsmydns.net/example-multi-redirect');
 
-        $checkLinkService->checkLink($link);
+        $this->checkLinkService->checkLink($link);
         $this->assertEquals(2, $link->getRedirectAmount());
     }
 
@@ -98,8 +99,7 @@ class CheckLinkTest extends WebTestCase
         $link = new Link();
         $link->setUrl('https://cnn.com');
 
-        $checkLinkService = new CheckLinkService();
-        $checkLinkService->checkLink($link);
+        $this->checkLinkService->checkLink($link);
 
         $this->assertIsString($link->getKeywords());
     }

@@ -6,17 +6,21 @@ use App\Entity\Link;
 
 class CheckLinkService
 {
+    public function __construct(
+        private ResponseFromUrlService $responseFromUrlService,
+        private RedirectsService $redirectService,
+        private KeywordsService $keywordsService
+    ) {
+    }
+
     public function checkLink(Link $link) : void
     {
-        $responseFromUrlService = new ResponseFromUrlService($link->getUrl());
-        $redirectService = new RedirectsService();
-        $keywordsService = new KeywordsService();
-        $response = $responseFromUrlService->getResponse();
-        $redirects = $redirectService->getRedirectHeaders($response);
+        $response = $this->responseFromUrlService->getResponse($link->getUrl());
+        $redirects = $this->redirectService->getRedirectHeaders($response);
         if (! empty($redirects)) {
             $link->setRedirects($redirects);
-            $link->setRedirectAmount($redirectService->getRedirectAmount($response));
-            $link->setKeywords($keywordsService->getKeywords($response));
+            $link->setRedirectAmount($this->redirectService->getRedirectAmount($response));
+            $link->setKeywords($this->keywordsService->getKeywords($response));
             $link->setCheckedAt(new \DateTime());
         }
     }

@@ -6,9 +6,6 @@ use App\Entity\Link;
 use App\Form\LinkType;
 use App\Repository\LinkRepository;
 use App\Service\CheckLinkService;
-use App\Service\KeywordsService;
-use App\Service\RedirectsService;
-use App\Service\ResponseFromUrlService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,6 +15,9 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/link')]
 class LinkController extends AbstractController
 {
+    public function __construct(private CheckLinkService $checkLinkService) {
+    }
+
     #[Route('/', name: 'app_link_index', methods: ['GET'])]
     public function index(LinkRepository $linkRepository): Response
     {
@@ -28,18 +28,14 @@ class LinkController extends AbstractController
 
     #[Route('/new', name: 'app_link_new', methods: ['GET', 'POST'])]
     public function new(Request $request,
-                        EntityManagerInterface $entityManager,
-                        KeywordsService $keywordsService,
-                        RedirectsService $redirectsService): Response
+                        EntityManagerInterface $entityManager): Response
     {
         $link = new Link();
         $form = $this->createForm(LinkType::class, $link);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $checkService = new CheckLinkService();
-            $checkService->checkLink($link);
-
+            $this->checkLinkService->checkLink($link);
             $entityManager->persist($link);
             $entityManager->flush();
 
@@ -67,6 +63,8 @@ class LinkController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->checkLinkService->checkLink($link);
+            $entityManager->persist($link);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_link_index', [], Response::HTTP_SEE_OTHER);

@@ -2,7 +2,6 @@
 
 namespace App\CronJobs;
 
-
 use App\Repository\LinkRepository;
 use App\Service\CheckLinkService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,6 +15,7 @@ class LinkCheckCronJob implements CronJobInterface
     public function __construct(
         private EntityManagerInterface $entityManager,
         private LinkRepository $linkRepository,
+        private CheckLinkService $checkLinkService,
     ) {
     }
     /**
@@ -37,10 +37,9 @@ class LinkCheckCronJob implements CronJobInterface
      */
     public function execute(InputInterface $input, OutputInterface $output, LoggerInterface|null $logger) : void
     {
-        $checkLinkService = new CheckLinkService();
         $links = $this->linkRepository->findAll();
         foreach ($links as $link){
-            $checkLinkService->checkLink($link);
+            $this->checkLinkService->checkLink($link);
             $this->entityManager->persist($link);
         }
         $this->entityManager->flush();

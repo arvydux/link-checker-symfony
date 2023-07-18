@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use http\Exception\RuntimeException;
 use PHPHtmlParser\Dom;
 use GuzzleHttp\Psr7\Response;
 
@@ -18,6 +19,6 @@ class KeywordsService
                 return $tag->getAttribute('content') ?: null;
             }
         }
-        return null;
+        return '';
     }
 }
