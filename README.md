@@ -5,7 +5,7 @@
 - `cd link-checker-symfony`
 - `composer install`
 - `docker-compose up -d`
-- `php bin/console doctrine:database:create`
+- `symfony bin/console doctrine:database:create`
 - `symfony console doctrine:migrations:migrate`
 - `symfony server:start -d`
 
