@@ -3,8 +3,8 @@
 ## Setup
 - `git clone https://github.com/arvydux/link-checker-symfony.git`
 - `cd link-checker-symfony`
-- `composer install`
 - `docker-compose up -d`
+- `composer install`
 - `symfony bin/console doctrine:database:create`
 - `symfony console doctrine:migrations:migrate`
 - `symfony server:start -d`
