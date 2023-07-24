@@ -8,7 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class CheckLinkTest extends WebTestCase
 {
-    protected function setUp() : void
+    protected function setUp(): void
     {
         static::bootKernel();
 

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\LinkRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -15,6 +16,7 @@ class Link
     private ?int $id = null;
 
     #[ORM\Column(length: 4096)]
+    #[Assert\Url]
     private ?string $url = null;
 
     #[ORM\Column(nullable: true)]

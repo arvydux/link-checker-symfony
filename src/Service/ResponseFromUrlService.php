@@ -9,7 +9,7 @@ use GuzzleHttp\Psr7\Response;
 
 class ResponseFromUrlService
 {
-    public function getResponse($url = ""): Response|Exception|ConnectException|null
+    public function getResponse($url): Response|Exception|ConnectException|null
     {
         $client = new Client(['allow_redirects' => ['track_redirects' => true], 'verify' => false]);
         try {

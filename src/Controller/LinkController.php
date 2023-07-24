@@ -15,7 +15,8 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/link')]
 class LinkController extends AbstractController
 {
-    public function __construct(private CheckLinkService $checkLinkService) {
+    public function __construct(private readonly CheckLinkService $checkLinkService)
+    {
     }
 
     #[Route('/', name: 'app_link_index', methods: ['GET'])]
@@ -27,9 +28,10 @@ class LinkController extends AbstractController
     }
 
     #[Route('/new', name: 'app_link_new', methods: ['GET', 'POST'])]
-    public function new(Request $request,
-                        EntityManagerInterface $entityManager): Response
-    {
+    public function new(
+        Request $request,
+        EntityManagerInterface $entityManager
+    ): Response {
         $link = new Link();
         $form = $this->createForm(LinkType::class, $link);
         $form->handleRequest($request);
@@ -79,7 +81,7 @@ class LinkController extends AbstractController
     #[Route('/{id}', name: 'app_link_delete', methods: ['POST'])]
     public function delete(Request $request, Link $link, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$link->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $link->getId(), $request->request->get('_token'))) {
             $entityManager->remove($link);
             $entityManager->flush();
         }
