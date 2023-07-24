@@ -3,10 +3,9 @@
 namespace App\Tests\Service;
 
 use App\Entity\Link;
-use App\Service\ResponseFromUrlService;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class CheckLinkTest extends WebTestCase
+class CheckLinkServiceTest extends WebTestCase
 {
     protected function setUp(): void
     {
@@ -15,7 +14,7 @@ class CheckLinkTest extends WebTestCase
         $this->checkLinkService = static::$kernel->getContainer()->get('App\Service\CheckLinkService');
     }
 
-    public function testCheckLinkServiceReturnDataProperly(): void
+    public function test_the_link_check_service_return_data_properly(): void
     {
         $link = new Link();
         $link->setUrl('http://cnn.com');
@@ -26,17 +25,6 @@ class CheckLinkTest extends WebTestCase
         $this->assertEquals(3, $link->getRedirectAmount());
         $this->assertNotEmpty($link->getKeywords());
         $this->assertNotEmpty($link->getCheckedAt());
-    }
-
-    public function test_response_from_url_service_returns_guzzle_http_response()
-    {
-        $link = new Link();
-        $link->setUrl('https://www.whatsmydns.net/example-301-redirect');
-
-        $responseFromUrlService = new ResponseFromUrlService();
-        $response = $responseFromUrlService->getResponse($link->getUrl());
-
-        $this->assertInstanceOf('GuzzleHttp\Psr7\Response', $response);
     }
 
     public function test_the_link_check_service_return_301_status_code_correctly(): void

@@ -14,7 +14,7 @@ class ListUploadType extends AbstractType
     {
         $builder
             // ...
-            ->add('brochure', FileType::class, [
+            ->add('file', FileType::class, [
                 'label'       => 'URL list (text file)',
                 'mapped'      => false,
                 'constraints' => [

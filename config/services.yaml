@@ -24,3 +24,9 @@ services:
     # please note that last definitions always *replace* previous ones
     App\Service\CheckLinkService:
         public: true
+    App\Service\KeywordsService:
+        public: true
+    App\Service\ResponseFromUrlService:
+        public: true
+    App\Service\RedirectsService:
+        public: true

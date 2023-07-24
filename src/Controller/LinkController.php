@@ -62,7 +62,7 @@ class LinkController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $fileData = $form->get('brochure')->getData();
+            $fileData = $form->get('file')->getData();
 
             $urlList = [];
 
