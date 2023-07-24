@@ -2,7 +2,6 @@
 
 namespace App\Service;
 
-use http\Exception\RuntimeException;
 use PHPHtmlParser\Dom;
 use GuzzleHttp\Psr7\Response;
 use PHPHtmlParser\Exceptions\ChildNotFoundException;

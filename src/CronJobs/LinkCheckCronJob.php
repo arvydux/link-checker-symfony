@@ -13,9 +13,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 class LinkCheckCronJob implements CronJobInterface
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
-        private LinkRepository $linkRepository,
-        private CheckLinkService $checkLinkService,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly LinkRepository $linkRepository,
+        private readonly CheckLinkService $checkLinkService,
     ) {
     }
     /**
